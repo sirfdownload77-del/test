@@ -1,10 +1,10 @@
 import streamlit as st
 import datetime
 
-# صفحے کی بنیادی سیٹنگ
+# صفحے کی سیٹنگ
 st.set_page_config(page_title="وکالت نامہ دیوانی - QLC", layout="wide")
 
-# نستعلیق فونٹ اور پروفیشنل ڈیزائن کی CSS
+# نستعلیق فونٹ اور پیج ڈیزائن کی مکمل CSS
 st.markdown("""
     <style>
     @font-face {
@@ -26,36 +26,38 @@ st.markdown("""
         max-width: 850px;
         background-color: white;
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        color: black;
     }
     .header-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
-    .header-table td { font-size: 20px; padding: 5px; vertical-align: middle; }
-    .legal-text { text-align: justify; font-size: 19px; line-height: 2.2; margin: 15px 0; }
-    .abd-row { display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; margin: 10px 0; }
+    .header-table td { font-size: 22px; padding: 5px; vertical-align: middle; color: black; }
+    .legal-text { text-align: justify; font-size: 20px; line-height: 2.2; margin: 15px 0; color: black; }
+    .abd-row { display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; margin: 10px 0; color: black; }
+    .footer-info { margin-top: 50px; border-top: 1px solid #000; padding-top: 10px; text-align: center; font-size: 14px; font-family: Arial; color: black; }
     </style>
     """, unsafe_allow_html=True)
 
 st.title("⚖️ وکالت نامہ دیوانی جنریٹر")
 
-# ان پٹ ڈیٹا کا فارم
+# ڈیٹا انٹری فارم
 with st.form("input_form"):
     st.write("### مقدمہ کی تفصیلات درج کریں")
     col1, col2 = st.columns(2)
     with col1:
         court_name = st.text_input("بعدالت جناب", "سینئر سول جج صاحب ملتان")
-        p_name = st.text_input("مدعی کا نام", "محمد عقیل")
-        adv_name = st.text_input("وکیل کا نام", "محمد حسن قریشی ایڈووکیٹ ہائی کورٹ")
+        p_name = st.text_input("مدعی / سائل کا نام", "محمد عقیل")
+        adv_name = st.text_input("وکیل / وکلاء صاحبان", "محمد حسن قریشی ایڈووکیٹ ہائی کورٹ")
     with col2:
-        d_name = st.text_input("مدعا علیہم کا نام", "محمد سلیم")
+        d_name = st.text_input("مدعا علیہ / مسئول علیہ کا نام", "محمد سلیم")
         case_subject = st.text_input("دعویٰ یا جرم", "تکمیل معاہدہ مختص بیع")
         current_date = st.date_input("مورخہ", datetime.date.today())
     
     submit_btn = st.form_submit_button("وکالت نامہ تیار کریں")
 
 if submit_btn:
-    # اصلی آؤٹ پٹ جو پرنٹ ہوگا
+    # آپ کے فراہم کردہ ڈیزائن کے مطابق آؤٹ پٹ
     st.markdown(f"""
     <div class="v-container" style="direction: rtl;">
-        <h2 style="text-align: center; text-decoration: underline; margin-bottom: 20px;">وکالت نامہ دیوانی</h2>
+        <h2 style="text-align: center; text-decoration: underline; margin-bottom: 20px; color: black;">وکالت نامہ دیوانی</h2>
         
         <table class="header-table">
             <tr>
@@ -73,7 +75,7 @@ if submit_btn:
             </tr>
         </table>
 
-        <div style="font-size: 22px; font-weight: bold; margin-top: 20px;">باعث تحریر آنکہ</div>
+        <div style="font-size: 22px; font-weight: bold; margin-top: 20px; color: black;">باعث تحریر آنکہ</div>
 
         <div class="abd-row">
             <span>العبــــــــــــــــد</span>
@@ -91,8 +93,8 @@ if submit_btn:
             <span>العبــــــــــــــــد</span>
         </div>
 
-        <p style="font-size: 20px; margin-top: 20px;"><b>مورخہ:</b> {current_date.strftime('%d-%m-%Y')}</p>
-        <p style="font-size: 20px; text-align: center; font-weight: bold; margin: 20px 0;">مضمون وکالت نامہ سُن لیا ہے اور اچھی طرح سمجھ لیا ہے اور منظور ہے۔</p>
+        <p style="font-size: 20px; margin-top: 20px; color: black;"><b>مورخہ:</b> {current_date.strftime('%d-%m-%Y')}</p>
+        <p style="font-size: 20px; text-align: center; font-weight: bold; margin: 20px 0; color: black;">مضمون وکالت نامہ سُن لیا ہے اور اچھی طرح سمجھ لیا ہے اور منظور ہے۔</p>
 
         <div class="abd-row" style="margin-top: 40px;">
             <span>العبــــــــــــــــد: ________________</span>
@@ -100,7 +102,7 @@ if submit_btn:
             <span>العبــــــــــــــــد: ________________</span>
         </div>
 
-        <div style="margin-top: 50px; border-top: 1px solid #000; padding-top: 10px; font-size: 14px; text-align: center; font-family: Arial;">
+        <div class="footer-info">
             <b>QLC Qureshi Law Chamber</b> | 02-Old Block, Near Judges Gate, Multan | {current_date.year}
         </div>
     </div>
