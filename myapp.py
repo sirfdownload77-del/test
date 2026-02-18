@@ -54,7 +54,7 @@ with st.form("vertical_form"):
     c1, c2 = st.columns(2)
     with c1:
         court = st.text_input("بعدالت جناب", "سول جج صاحب، ملتان")
-        case_no = st.text_input("مقدمہ نمبر", "123/2026")
+        case_no = st.text_input("مقدمہ نمبر")
         plaintiff = st.text_input("مدعی کا نام", "محمد عقیل")
     with c2:
         defendant_name = st.text_input("مدعا علیہ کا نام", "محمد سلیم")
