@@ -1,97 +1,98 @@
 import streamlit as st
 
-st.set_page_config(page_title="QLC Summons Generator", layout="wide")
+st.set_page_config(page_title="QLC Vertical Summons", layout="wide")
 
-# CSS برائے لیگل سائز پرنٹنگ
+# CSS برائے عمودی تقسیم (Vertical Split)
 st.markdown("""
     <style>
     @media print {
+        @page {
+            size: 8.5in 13in;
+            margin: 0;
+        }
         html, body {
-            height: 12.8in; /* کاغذ سے تھوڑا کم تاکہ مارجن برقرار رہے */
+            height: 13in;
             margin: 0 !important;
             padding: 0 !important;
             overflow: hidden;
         }
         .main-container {
+            display: flex; /* عمودی تقسیم کے لیے فلیکس باکس */
             width: 8.5in;
-            height: 12.8in;
-            display: flex;
-            flex-direction: column;
+            height: 13in;
+            flex-direction: row; /* سائیڈ بائی سائیڈ */
             justify-content: space-between;
-            margin: auto;
         }
         .summons-box {
-            height: 48% !important; /* صفحے کا آدھے سے تھوڑا کم حصہ */
-            page-break-inside: avoid;
-            border: 2px solid #000 !important;
-            padding: 15px !important;
+            width: 48%; /* چوڑائی آدھے سے کم تاکہ درمیان میں جگہ رہے */
+            height: 100%;
+            border-left: 1px dashed #000; /* کٹائی کا نشان */
+            padding: 10px;
             box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
         }
         .no-print { display: none !important; }
-        /* ہائیڈ کریں اسٹریم لٹ کے ڈیفالٹ ایلیمنٹس */
         header, footer, .stDeployButton { display: none !important; }
     }
     body { direction: rtl; font-family: 'Arial'; }
     </style>
     """, unsafe_allow_html=True)
 
-st.title("QLC Qureshi Law Chamber")
-st.subheader("سمن تنقیح طلب - فکسڈ لیگل سائز (13x8.5)")
+st.title("QLC - عمودی سمن جنریٹر")
 
-with st.form("summons_form"):
-    st.write("### مشترکہ معلومات")
+with st.form("vertical_form"):
+    st.write("### کیس کی معلومات")
     c1, c2 = st.columns(2)
     with c1:
         court = st.text_input("بعدالت جناب", "سول جج صاحب، ملتان")
         case_no = st.text_input("مقدمہ نمبر")
-    with c2:
         plaintiff = st.text_input("مدعی کا نام")
+    with c2:
         subject = st.text_input("نالش بابت", "حصولِ ڈگری")
-    
+        issuance = st.text_input("تاریخِ اجراء")
+        note_date = st.text_input("تحریری بیان کی تاریخ")
+
     st.divider()
     col_l, col_r = st.columns(2)
     with col_l:
-        st.write("### سمن 1")
-        def1 = st.text_area("نام و پتہ مدعا علیہ (1)", height=100)
-        date1 = st.text_input("تاریخِ پیشی (1)")
-        issuance1 = st.text_input("تاریخِ اجراء (1)")
-        note1 = st.text_input("تحریری بیان کی تاریخ (1)")
+        st.write("### سمن 1 (بائیں طرف)")
+        def1 = st.text_area("مدعا علیہ 1", height=80)
+        date1 = st.text_input("تاریخِ پیشی 1")
     with col_r:
-        st.write("### سمن 2")
-        def2 = st.text_area("نام و پتہ مدعا علیہ (2)", height=100)
-        date2 = st.text_input("تاریخِ پیشی (2)")
-        issuance2 = st.text_input("تاریخِ اجراء (2)")
-        note2 = st.text_input("تحریری بیان کی تاریخ (2)")
+        st.write("### سمن 2 (دائیں طرف)")
+        def2 = st.text_area("مدعا علیہ 2", height=80)
+        date2 = st.text_input("تاریخِ پیشی 2")
 
-    submit = st.form_submit_button("پرنٹ کے لیے تیار کریں")
+    submit = st.form_submit_button("پرنٹ تیار کریں")
 
-def render_summons(court, case_no, plaintiff, defendant, subject, hearing_date, issuance, note_date):
+def render_vertical_summons(court, case_no, plaintiff, defendant, subject, hearing_date, issuance, note_date):
     return f"""
-    <div class="summons-box" style="direction: rtl; line-height: 1.5;">
-        <h2 style="text-align: center; margin: 0; font-size: 18px;">سمن تنقیح طلب بنام مدعا علیہ</h2>
-        <p style="text-align: center; font-size: 11px; margin: 0;">(قاعدہ نمبر 5 مجموعہ ضابطہ دیوانی)</p>
+    <div class="summons-box" style="direction: rtl; line-height: 1.4; padding: 15px;">
+        <h3 style="text-align: center; font-size: 16px; margin-bottom: 5px;">سمن تنقیح طلب بنام مدعا علیہ</h3>
+        <p style="text-align: center; font-size: 10px; margin: 0;">(قاعدہ نمبر 5 مجموعہ ضابطہ دیوانی)</p>
         
-        <p style="margin: 5px 0; font-size: 14px;"><b>بعدالت جناب:</b> {court}</p>
-        <p style="margin: 5px 0; font-size: 14px;"><b>مقدمہ نمبر:</b> {case_no} &nbsp;&nbsp; <b>بنام</b> &nbsp;&nbsp; {plaintiff}</p>
-        <p style="margin: 5px 0; font-size: 14px;"><b>بنام:</b> {defendant}</p>
+        <p style="font-size: 13px; margin: 5px 0;"><b>بعدالت جناب:</b><br>{court}</p>
+        <p style="font-size: 13px; margin: 5px 0;"><b>مقدمہ نمبر:</b> {case_no}</p>
+        <p style="font-size: 13px; margin: 5px 0;"><b>بنام:</b> {plaintiff}</p>
+        <p style="font-size: 13px; margin: 5px 0;"><b>بنام مدعا علیہ:</b><br>{defendant}</p>
 
-        <p style="text-align: justify; font-size: 13px; margin: 5px 0;">
-        ہر گاہ <b>{plaintiff}</b> نے آپ کے نام ایک نالش بابت <b>{subject}</b> کے دائر کی ہے لہذا آپ کو بذریعہ تحریر ہذا حکم ہوتا ہے کہ 
-        <b>بتاریخ {hearing_date} بوقت 8 بجے</b> قبل از دوپہر اصالتاً معرفت وکیل حاضر ہوں اور جوابدہی دعویٰ کریں۔
-        اور ہر گاہ وہی تاریخ انفصال قطعی مقدمہ کی تجویز ہوتی ہے پس آپ کو لازم ہے کہ اسی روز اپنے جملہ گواہوں اور دستاویزات کو پیش کریں۔
+        <p style="text-align: justify; font-size: 12px; margin: 10px 0;">
+        ہر گاہ <b>{plaintiff}</b> نے آپ کے نام ایک نالش بابت <b>{subject}</b> کے دائر کی ہے لہذا آپ کو حکم ہوتا ہے کہ 
+        <b>بتاریخ {hearing_date} بوقت 8 بجے</b> قبل از دوپہر اصالتاً یا معرفت وکیل حاضر عدالت ہوں اور جوابدہی دعویٰ کریں۔
+        <br><br>
+        اسی روز اپنے جملہ گواہوں اور دستاویزات کو پیش کریں۔ عدم حاضری کی صورت میں فیصلہ یکطرفہ ہوگا۔ 
+        <br><br>
+        آج <b>بتاریخ {issuance}</b> جاری کیا گیا۔
         </p>
 
-        <p style="font-size: 13px; margin: 5px 0;">عدم حاضری کی صورت میں فیصلہ یکطرفہ ہوگا۔ آج <b>بتاریخ {issuance}</b> جاری کیا گیا۔</p>
+        <div style="margin-top: auto; font-size: 12px;">
+            <p><b>دستخط جج صاحب</b> ________</p>
+            <p style="text-align: left;"><b>مہر عدالت</b> ________</p>
+        </div>
 
-        <table style="width: 100%; margin-top: 5px;">
-            <tr style="font-size: 13px;">
-                <td><b>دستخط جج صاحب</b> ________</td>
-                <td style="text-align: left;"><b>مہر عدالت</b> ________</td>
-            </tr>
-        </table>
-
-        <div style="margin-top: 5px; font-size: 10px; border-top: 1px solid #ccc; padding-top: 5px;">
-            <b>اطلاع:</b> گواہان کو جبراً طلب کرنے کے لیے خرچہ عدالت جمع کروائیں۔ (2) اگر مطالبہ تسلیم کریں تو رقم جمع کرائیں۔
+        <div style="font-size: 9px; border-top: 1px solid #ccc; padding-top: 5px; margin-top: 10px;">
+            <b>اطلاع:</b> گواہان کو جبراً طلب کرنے کے لیے خرچہ عدالت جمع کروائیں۔ 
             <br><b>نوٹ:</b> تحریری بیان بتاریخ <b>{note_date}</b> تک داخل کریں۔
         </div>
     </div>
@@ -100,13 +101,9 @@ def render_summons(court, case_no, plaintiff, defendant, subject, hearing_date, 
 if submit:
     html_content = f"""
     <div class="main-container">
-        {render_summons(court, case_no, plaintiff, def1, subject, date1, issuance1, note1)}
-        {render_summons(court, case_no, plaintiff, def2, subject, date2, issuance2, note2)}
+        {render_vertical_summons(court, case_no, plaintiff, def1, subject, date1, issuance, note_date)}
+        {render_vertical_summons(court, case_no, plaintiff, def2 if def2 else def1, subject, date2 if def2 else date1, issuance, note_date)}
     </div>
-    <script>
-        setTimeout(function() {{
-            window.print();
-        }}, 500);
-    </script>
+    <script>setTimeout(function() {{ window.print(); }}, 500);</script>
     """
-    st.components.v1.html(html_content, height=1200)
+    st.components.v1.html(html_content, height=1300)
