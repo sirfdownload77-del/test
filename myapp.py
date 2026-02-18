@@ -3,7 +3,6 @@ import datetime
 
 st.set_page_config(page_title="QLC Vertical Summons", layout="wide")
 
-# CSS برائے نستعلیق فونٹ اور لیگل سائز پرنٹنگ
 st.markdown("""
     <style>
     @font-face {
@@ -33,47 +32,48 @@ st.markdown("""
         header, footer, .stDeployButton { display: none !important; }
     }
     body { direction: rtl; font-family: 'Jameel Noori Nastaleeq', 'Arial', serif; }
-    .case-line {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    .case-header-table {
         width: 100%;
-        margin: 5px 0;
-        font-size: 15px;
+        margin: 10px 0;
+        border-collapse: collapse;
+    }
+    .case-header-table td {
+        vertical-align: middle;
+        font-size: 16px;
     }
     </style>
     """, unsafe_allow_html=True)
 
 st.title("QLC - عمودی سمن جنریٹر")
 
-# ڈیفالٹ تاریخ (18.02.2026)
+# ڈیفالٹ تاریخ
 default_date = datetime.date(2026, 2, 18)
 
 with st.form("vertical_form"):
-    st.write("### کیس کی معلومات")
+    st.write("### کیس کی تفصیلات")
     c1, c2 = st.columns(2)
     with c1:
         court = st.text_input("بعدالت جناب", "سول جج صاحب، ملتان")
         case_no = st.text_input("مقدمہ نمبر", "123/2026")
         plaintiff = st.text_input("مدعی کا نام", "محمد عقیل")
     with c2:
-        defendant_name = st.text_input("مدعا علیہ کا نام", "سلیم")
-        subject = st.text_input("نالش بابت", "حصولِ ڈگری")
+        defendant_name = st.text_input("مدعا علیہ کا نام", "محمد سلیم")
+        subject = st.text_input("نالش بابت", "تکمیل معاہدہ مختص بیع")
         issuance_date = st.date_input("تاریخِ اجراء", default_date)
         statement_date = st.date_input("تحریری بیان کی تاریخ", default_date)
 
     st.divider()
     col_l, col_r = st.columns(2)
     with col_l:
-        st.write("### سمن 1 (بائیں طرف)")
-        def1_full = st.text_area("مدعا علیہ 1 کا مکمل پتہ", "سلیم ولد نامعلوم سکنہ ملتان")
+        st.write("### سمن 1")
+        def1_full = st.text_area("مدعا علیہ 1 کا مکمل پتہ", "محمد سلیم ولد نامعلوم سکنہ ملتان")
         hearing1 = st.date_input("تاریخِ پیشی 1", default_date)
     with col_r:
-        st.write("### سمن 2 (دائیں طرف)")
-        def2_full = st.text_area("مدعا علیہ 2 کا مکمل پتہ", help="خالی چھوڑنے پر پہلے کی کاپی بنے گی")
+        st.write("### سمن 2")
+        def2_full = st.text_area("مدعا علیہ 2 کا مکمل پتہ")
         hearing2 = st.date_input("تاریخِ پیشی 2", default_date)
 
-    submit = st.form_submit_button("پرنٹ تیار کریں")
+    submit = st.form_submit_button("پرنٹ کے لیے تیار کریں")
 
 def render_summons(court, case_no, plaintiff, versus, defendant_address, subject, hearing, issuance, note):
     h_str = hearing.strftime('%d.%m.%Y')
@@ -83,18 +83,19 @@ def render_summons(court, case_no, plaintiff, versus, defendant_address, subject
     return f"""
     <div class="summons-box" style="direction: rtl; line-height: 1.7;">
         <h3 style="text-align: center; font-size: 22px; margin-bottom: 0;">سمن تنقیح طلب بنام مدعا علیہ</h3>
-        <p style="text-align: center; font-size: 12px; margin-top: 0;">(قاعدہ نمبر 5 مجموعہ ضابطہ دیوانی)</p>
+        <p style="text-align: center; font-size: 11px; margin-top: 0;">(قاعدہ نمبر 5 مجموعہ ضابطہ دیوانی)</p>
         
         <p style="font-size: 15px; margin: 10px 0 5px 0;"><b>بعدالت جناب:</b> {court}</p>
         
-        <div class="case-line">
-            <span><b>مقدمہ نمبر:</b> {case_no}</span>
-            <span><b>بنام</b></span>
-        </div>
-        <div class="case-line" style="border-bottom: 1px solid #eee; padding-bottom: 5px;">
-            <span style="font-size: 16px;"><b>{plaintiff}</b> (مدعی)</span>
-            <span style="font-size: 16px;"><b>{versus}</b> (مدعا علیہ)</span>
-        </div>
+        <p style="font-size: 15px; margin: 0;"><b>مقدمہ نمبر:</b> {case_no}</p>
+        
+        <table class="case-header-table">
+            <tr>
+                <td style="text-align: right; width: 40%;"><b>{plaintiff}</b> (مدعی)</td>
+                <td style="text-align: center; width: 20%;"><b>بنام</b></td>
+                <td style="text-align: left; width: 40%;"><b>{versus}</b> (مدعا علیہ)</td>
+            </tr>
+        </table>
 
         <p style="font-size: 15px; margin: 10px 0;"><b>بنام:</b> {defendant_address}</p>
 
@@ -107,7 +108,7 @@ def render_summons(court, case_no, plaintiff, versus, defendant_address, subject
         اور ہر گاہ وہی تاریخ جو آپ کی حاضری کے لئے مقرر ہے انفصال قطعی مقدمہ کی تجویز ہوتی ہے پس آپ کو لازم ہے کہ اسی روز اپنے جملہ گواہوں کو پیش کریں جن کی شہادت پر آپ استدلال کرنا چاہتے ہیں نیز آپ کو لازم ہے کہ جملہ دستاویزات بھی اسی روز پیش کریں۔
         </p>
 
-        <p style="font-size: 14px;">واضح رہے کہ اگر بروز مذکور آپ حاضر نہ ہوں گے تو مقدمہ بغیر حاضری مسموع ہوگا اور فصیل ہوگا۔ بہ ثبت میرے دستخط اور مہر عدالت آج <b>بتاریخ {i_str}</b> جاری کیا گیا۔</p>
+        <p style="font-size: 14px;">واضح رہے کہ اگر بروز مذکور آپ حاضر نہ ہوں گے تو مقدمہ بغیر حاضری مسموع ہوگا اور فصیل ہوگا۔ آج <b>بتاریخ {i_str}</b> جاری کیا گیا۔</p>
 
         <div style="margin-top: 25px; display: flex; justify-content: space-between; font-size: 15px;">
             <span><b>دستخط جج صاحب</b> ________</span>
@@ -115,8 +116,7 @@ def render_summons(court, case_no, plaintiff, versus, defendant_address, subject
         </div>
 
         <div style="font-size: 11px; border-top: 1px solid #000; padding-top: 10px; margin-top: auto; padding-bottom: 20px;">
-            <b>اطلاع:</b> (1) اگر آپ کو اندیشہ ہو کہ گواہ مرضی سے حاضر نہ ہوں گے تو خرچہ ضروری داخل کر کے سمن جاری کروائیں۔ 
-            (2) اگر مطالبہ تسلیم کرتے ہوں تو روپیہ اور خرچہ عدالت میں داخل کریں۔
+            <b>اطلاع:</b> (1) اگر آپ کو اندیشہ ہو کہ گواہ مرضی سے حاضر نہ ہوں گے تو خرچہ ضروری داخل کر کے سمن جاری کروائیں (2) اگر مطالبہ تسلیم کریں تو رقم عدالت میں داخل کریں۔
             <br><br>
             <b>نوٹ:</b> تحریری بیان بتاریخ <b>{n_str}</b> تک داخل کریں۔
         </div>
