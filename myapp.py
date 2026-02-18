@@ -33,12 +33,20 @@ st.markdown("""
         header, footer, .stDeployButton { display: none !important; }
     }
     body { direction: rtl; font-family: 'Jameel Noori Nastaleeq', 'Arial', serif; }
+    .case-line {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin: 5px 0;
+        font-size: 15px;
+    }
     </style>
     """, unsafe_allow_html=True)
 
 st.title("QLC - عمودی سمن جنریٹر")
 
-# ڈیفالٹ تاریخ سیٹ کرنا (18-02-2026)
+# ڈیفالٹ تاریخ (18.02.2026)
 default_date = datetime.date(2026, 2, 18)
 
 with st.form("vertical_form"):
@@ -49,7 +57,7 @@ with st.form("vertical_form"):
         case_no = st.text_input("مقدمہ نمبر", "123/2026")
         plaintiff = st.text_input("مدعی کا نام", "محمد عقیل")
     with c2:
-        defendant_name = st.text_input("مدعا علیہ کا نام (بنام کے لیے)", "سلیم")
+        defendant_name = st.text_input("مدعا علیہ کا نام", "سلیم")
         subject = st.text_input("نالش بابت", "حصولِ ڈگری")
         issuance_date = st.date_input("تاریخِ اجراء", default_date)
         statement_date = st.date_input("تحریری بیان کی تاریخ", default_date)
@@ -77,9 +85,18 @@ def render_summons(court, case_no, plaintiff, versus, defendant_address, subject
         <h3 style="text-align: center; font-size: 22px; margin-bottom: 0;">سمن تنقیح طلب بنام مدعا علیہ</h3>
         <p style="text-align: center; font-size: 12px; margin-top: 0;">(قاعدہ نمبر 5 مجموعہ ضابطہ دیوانی)</p>
         
-        <p style="font-size: 15px; margin: 5px 0;"><b>بعدالت جناب:</b> {court}</p>
-        <p style="font-size: 15px; margin: 5px 0;"><b>مقدمہ نمبر:</b> {case_no} &nbsp;&nbsp; <b>بنام</b> &nbsp;&nbsp; {plaintiff} بنام {versus}</p>
-        <p style="font-size: 15px; margin: 5px 0;"><b>بنام:</b> {defendant_address}</p>
+        <p style="font-size: 15px; margin: 10px 0 5px 0;"><b>بعدالت جناب:</b> {court}</p>
+        
+        <div class="case-line">
+            <span><b>مقدمہ نمبر:</b> {case_no}</span>
+            <span><b>بنام</b></span>
+        </div>
+        <div class="case-line" style="border-bottom: 1px solid #eee; padding-bottom: 5px;">
+            <span style="font-size: 16px;"><b>{plaintiff}</b> (مدعی)</span>
+            <span style="font-size: 16px;"><b>{versus}</b> (مدعا علیہ)</span>
+        </div>
+
+        <p style="font-size: 15px; margin: 10px 0;"><b>بنام:</b> {defendant_address}</p>
 
         <p style="text-align: justify; font-size: 14px;">
         ہر گاہ <b>{plaintiff}</b> نے آپ کے نام ایک نالش بابت <b>{subject}</b> کے دائر کی ہے لہذا آپ کو بذریعہ تحریر ہذا حکم ہوتا ہے کہ 
@@ -97,7 +114,7 @@ def render_summons(court, case_no, plaintiff, versus, defendant_address, subject
             <span><b>مہر عدالت</b> ________</span>
         </div>
 
-        <div style="font-size: 11px; border-top: 1px solid #000; padding-top: 10px; margin-top: 40px;">
+        <div style="font-size: 11px; border-top: 1px solid #000; padding-top: 10px; margin-top: auto; padding-bottom: 20px;">
             <b>اطلاع:</b> (1) اگر آپ کو اندیشہ ہو کہ گواہ مرضی سے حاضر نہ ہوں گے تو خرچہ ضروری داخل کر کے سمن جاری کروائیں۔ 
             (2) اگر مطالبہ تسلیم کرتے ہوں تو روپیہ اور خرچہ عدالت میں داخل کریں۔
             <br><br>
