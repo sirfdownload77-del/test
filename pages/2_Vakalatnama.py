@@ -1,10 +1,10 @@
 import streamlit as st
 import datetime
 
-# پیج سیٹنگ
-st.set_page_config(page_title="Vakalatnama - QLC", layout="wide")
+# پیج کی سیٹنگ
+st.set_page_config(page_title="وکالت نامہ - QLC", layout="wide")
 
-# CSS برائے نستعلیق فونٹ اور خوبصورت ڈیزائن
+# نستعلیق فونٹ اور پروفیشنل اسٹائلنگ
 st.markdown("""
     <style>
     @font-face {
@@ -15,23 +15,22 @@ st.markdown("""
         direction: rtl;
         font-family: 'Jameel Noori Nastaleeq', serif;
         border: 2px solid #000;
-        padding: 40px;
+        padding: 50px;
         background-color: white;
         color: black;
         width: 100%;
         max-width: 850px;
         margin: auto;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    .header-table { width: 100%; border-collapse: collapse; }
-    .header-table td { font-size: 22px; padding: 8px; color: black; }
-    .legal-text { text-align: justify; font-size: 20px; line-height: 2.3; margin-top: 20px; color: black; }
-    .abd-row { display: flex; justify-content: space-between; font-size: 18px; margin: 20px 0; font-weight: bold; color: black; }
-    .footer-info { border-top: 1px solid #000; margin-top: 40px; padding-top: 10px; text-align: center; font-family: Arial; font-size: 13px; color: black; }
+    .header-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    .header-table td { font-size: 22px; padding: 10px; color: black; vertical-align: middle; }
+    .legal-text { text-align: justify; font-size: 20px; line-height: 2.3; color: black; }
+    .abd-row { display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; margin: 20px 0; color: black; }
+    .footer-info { border-top: 1px solid #000; margin-top: 40px; padding-top: 10px; text-align: center; font-size: 14px; color: black; font-family: Arial; }
     
     @media print {
         .no-print { display: none !important; }
-        .v-container { border: none !important; box-shadow: none !important; padding: 0 !important; }
+        .v-container { border: none !important; padding: 0 !important; }
         header, footer, .stDeployButton { display: none !important; }
     }
     </style>
@@ -39,21 +38,21 @@ st.markdown("""
 
 st.title("⚖️ وکالت نامہ جنریٹر")
 
-# ان پٹ خانے تاکہ آپ نام تبدیل کر سکیں
-with st.form("print_form"):
-    st.write("### مقدمہ کی تفصیلات")
-    c1, c2 = st.columns(2)
-    with c1:
+# ان پٹ فارم
+with st.form("form_inputs", clear_on_submit=False):
+    st.info("تفصیلات درج کریں اور 'وکالت نامہ تیار کریں' پر کلک کریں۔")
+    col1, col2 = st.columns(2)
+    with col1:
         court = st.text_input("بعدالت جناب", "سینئر سول جج صاحب ملتان")
-        plaintiff = st.text_input("مدعی کا نام", "محمد عقیل")
-    with c2:
-        defendant = st.text_input("مدعا علیہم کا نام", "محمد سلیم")
+        plaintiff = st.text_input("مدعی / منجانب", "محمد عقیل")
+    with col2:
+        defendant = st.text_input("مدعا علیہم / بنام", "محمد سلیم")
         case_type = st.text_input("دعویٰ یا جرم", "تکمیل معاہدہ مختص بیع")
     
-    submitted = st.form_submit_button("وکالت نامہ تیار کریں")
+    submit = st.form_submit_button("وکالت نامہ تیار کریں")
 
-if submitted:
-    # اصلی وکالت نامہ کا ڈسپلے
+if submit:
+    # یہاں آپ کا ڈیزائن پائتھون کے ذریعے چلے گا
     st.markdown(f"""
     <div class="v-container">
         <h1 style="text-align: center; text-decoration: underline;">وکالت نامہ دیوانی</h1>
@@ -108,5 +107,5 @@ if submitted:
         </div>
     </div>
     <br>
-    <button class="no-print" onclick="window.print()" style="display: block; margin: auto; padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">پرنٹ نکالیں</button>
+    <button class="no-print" onclick="window.print()" style="display: block; margin: auto; padding: 10px 25px; background-color: #1E88E5; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 18px;">پرنٹ کریں</button>
     """, unsafe_allow_html=True)
