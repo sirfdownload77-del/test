@@ -1,78 +1,77 @@
 import streamlit as st
 import datetime
 
-# پیج کی سیٹنگ
-st.set_page_config(page_title="وکالت نامہ دیوانی - QLC", layout="wide")
+# صفحے کی ترتیب
+st.set_page_config(page_title="Vakalatnama - QLC", layout="wide")
 
-# نستعلیق فونٹ اور پروفیشنل اسٹائلنگ (CSS)
+# نستعلیق فونٹ اور ڈیزائن کے لیے CSS
 st.markdown("""
     <style>
     @font-face {
         font-family: 'Jameel Noori Nastaleeq';
         src: url('https://fonts.cdnfonts.com/s/73173/JameelNooriNastaleeq.woff') format('woff');
     }
-    body { direction: rtl; font-family: 'Jameel Noori Nastaleeq', serif; color: black; }
     .v-container {
         direction: rtl;
+        font-family: 'Jameel Noori Nastaleeq', serif;
         border: 2px solid #000;
-        padding: 40px;
+        padding: 50px;
         background-color: white;
         color: black;
         width: 100%;
         max-width: 850px;
         margin: auto;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    .header-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
-    .header-table td { font-size: 22px; padding: 5px; vertical-align: middle; color: black; }
-    .legal-text { text-align: justify; font-size: 20px; line-height: 2.3; margin: 15px 0; color: black; }
-    .abd-row { display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; margin: 10px 0; color: black; }
-    .footer-info { margin-top: 50px; border-top: 1px solid #000; padding-top: 10px; text-align: center; font-size: 14px; font-family: Arial; color: black; }
+    .header-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    .header-table td { font-size: 22px; padding: 10px; color: black; border: none; }
+    .legal-text { text-align: justify; font-size: 20px; line-height: 2.2; color: black; }
+    .abd-row { display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; margin: 20px 0; color: black; }
+    .footer-info { border-top: 1px solid #000; margin-top: 40px; padding-top: 10px; text-align: center; font-size: 14px; color: black; font-family: Arial; }
     
     @media print {
         .no-print { display: none !important; }
-        .v-container { border: none !important; padding: 0 !important; box-shadow: none !important; }
+        .v-container { border: none !important; padding: 0 !important; }
         header, footer, .stDeployButton { display: none !important; }
     }
     </style>
 """, unsafe_allow_html=True)
 
-st.title("⚖️ وکالت نامہ دیوانی جنریٹر")
+st.title("⚖️ وکالت نامہ جنریٹر - QLC")
 
-# ان پٹ فارم تاکہ آپ معلومات تبدیل کر سکیں
-with st.form("input_details"):
-    st.write("### مقدمہ کی تفصیلات درج کریں")
-    col1, col2 = st.columns(2)
-    with col1:
+# معلومات درج کرنے کا فارم
+with st.form("input_form"):
+    st.write("### مقدمہ کی معلومات درج کریں")
+    c1, c2 = st.columns(2)
+    with c1:
         court = st.text_input("بعدالت جناب", "سینئر سول جج صاحب ملتان")
-        p_name = st.text_input("مدعی / منجانب", "محمد عقیل")
-        adv_name = st.text_input("وکیل صاحب کا نام", "محمد حسن قریشی ایڈووکیٹ ہائی کورٹ")
-    with col2:
-        d_name = st.text_input("مدعا علیہم / بنام", "محمد سلیم")
-        case_subject = st.text_input("دعویٰ یا جرم", "تکمیل معاہدہ مختص بیع")
-        date_val = st.date_input("مورخہ", datetime.date.today())
+        plaintiff = st.text_input("مدعی کا نام", "محمد عقیل")
+        adv_name = st.text_input("وکیل کا نام", "محمد حسن قریشی ایڈووکیٹ ہائی کورٹ")
+    with c2:
+        defendant = st.text_input("مدعا علیہم کا نام", "محمد سلیم")
+        case_type = st.text_input("دعویٰ یا جرم", "تکمیل معاہدہ مختص بیع")
+        date_today = st.date_input("تاریخ", datetime.date.today())
     
-    submitted = st.form_submit_button("وکالت نامہ تیار کریں")
+    submit = st.form_submit_button("وکالت نامہ تیار کریں")
 
-if submitted:
-    # اصلی آؤٹ پٹ جو آپ کے ڈیزائن کے عین مطابق ہے
+if submit:
+    # آپ کے ڈیزائن کے مطابق HTML رزلٹ
     st.markdown(f"""
     <div class="v-container">
-        <h2 style="text-align: center; text-decoration: underline; margin-bottom: 20px;">وکالت نامہ دیوانی</h2>
+        <h1 style="text-align: center; text-decoration: underline;">وکالت نامہ دیوانی</h1>
         
         <table class="header-table">
             <tr>
                 <td colspan="3"><b>بعدالت جناب:</b> {court}</td>
             </tr>
             <tr>
-                <td style="width: 45%;"><b>{p_name}</b> (مدعی)</td>
+                <td style="width: 45%;"><b>{plaintiff}</b> (مدعی)</td>
                 <td style="text-align: center; width: 10%;"><b>بــــنـــام</b></td>
-                <td style="width: 45%; text-align: left;"><b>{d_name}</b> (مدعا علیہم)</td>
+                <td style="width: 45%; text-align: left;"><b>{defendant}</b> (مدعا علیہم)</td>
             </tr>
             <tr>
-                <td style="border-top: 1px solid #000;"><b>منجانب:</b> {p_name}</td>
+                <td style="border-top: 1px solid #000;"><b>منجانب:</b> {plaintiff}</td>
                 <td style="border-top: 1px solid #000;"></td>
-                <td style="border-top: 1px solid #000; text-align: left;"><b>دعویٰ یا جرم:</b> {case_subject}</td>
+                <td style="border-top: 1px solid #000; text-align: left;"><b>دعویٰ یا جرم:</b> {case_type}</td>
             </tr>
         </table>
 
@@ -94,7 +93,7 @@ if submitted:
             <span>العبــــــــــــــــد</span>
         </div>
 
-        <p style="font-size: 20px;"><b>مورخہ:</b> {date_val.strftime('%d-%m-%Y')}</p>
+        <p style="font-size: 20px;"><b>مورخہ:</b> {date_today.strftime('%d-%m-%Y')}</p>
         <p style="font-size: 20px; text-align: center; font-weight: bold; margin: 20px 0;">مضمون وکالت نامہ سُن لیا ہے اور اچھی طرح سمجھ لیا ہے اور منظور ہے۔</p>
 
         <div class="abd-row" style="margin-top: 50px;">
@@ -104,7 +103,7 @@ if submitted:
         </div>
 
         <div class="footer-info">
-            <b>QLC Qureshi Law Chamber</b> | 02-Old Block, Near Judges Gate, Multan | 2026
+            <b>QLC Qureshi Law Chamber</b> | 02-Old Block, Near Judges Gate, Multan | {date_today.year}
             <br>
             Email: qureshilaw1977@gmail.com | WhatsApp: +92 330 5477770 | Cell: +92 303 0244382
         </div>
