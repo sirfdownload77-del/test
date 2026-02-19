@@ -4,7 +4,7 @@ import datetime
 # صفحے کی سیٹنگ
 st.set_page_config(page_title="وکالت نامہ دیوانی - QLC", layout="wide")
 
-# نستعلیق فونٹ اور پیج ڈیزائن کی مکمل CSS
+# نستعلیق فونٹ اور پروفیشنل ڈیزائن کی CSS
 st.markdown("""
     <style>
     @font-face {
@@ -17,10 +17,10 @@ st.markdown("""
         header, footer, .stDeployButton { display: none !important; }
         .v-container { border: 2px solid #000 !important; width: 100% !important; box-shadow: none !important; }
     }
-    body { direction: rtl; font-family: 'Jameel Noori Nastaleeq', serif; }
+    body { direction: rtl; font-family: 'Jameel Noori Nastaleeq', serif; color: black; }
     .v-container {
         border: 2px solid #000;
-        padding: 40px;
+        padding: 50px;
         margin: auto;
         width: 100%;
         max-width: 850px;
@@ -30,7 +30,7 @@ st.markdown("""
     }
     .header-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
     .header-table td { font-size: 22px; padding: 5px; vertical-align: middle; color: black; }
-    .legal-text { text-align: justify; font-size: 20px; line-height: 2.2; margin: 15px 0; color: black; }
+    .legal-text { text-align: justify; font-size: 20px; line-height: 2.3; margin: 15px 0; color: black; }
     .abd-row { display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; margin: 10px 0; color: black; }
     .footer-info { margin-top: 50px; border-top: 1px solid #000; padding-top: 10px; text-align: center; font-size: 14px; font-family: Arial; color: black; }
     </style>
@@ -39,39 +39,39 @@ st.markdown("""
 st.title("⚖️ وکالت نامہ دیوانی جنریٹر")
 
 # ڈیٹا انٹری فارم
-with st.form("input_form"):
-    st.write("### مقدمہ کی تفصیلات درج کریں")
-    col1, col2 = st.columns(2)
-    with col1:
-        court_name = st.text_input("بعدالت جناب", "سینئر سول جج صاحب ملتان")
-        p_name = st.text_input("مدعی / سائل کا نام", "محمد عقیل")
-        adv_name = st.text_input("وکیل / وکلاء صاحبان", "محمد حسن قریشی ایڈووکیٹ ہائی کورٹ")
-    with col2:
-        d_name = st.text_input("مدعا علیہ / مسئول علیہ کا نام", "محمد سلیم")
-        case_subject = st.text_input("دعویٰ یا جرم", "تکمیل معاہدہ مختص بیع")
-        current_date = st.date_input("مورخہ", datetime.date.today())
+with st.form("vakalat_input_form"):
+    st.write("### مقدمہ کی معلومات")
+    c1, c2 = st.columns(2)
+    with c1:
+        court = st.text_input("بعدالت جناب", "سینئر سول جج صاحب ملتان")
+        plaintiff = st.text_input("مدعی / منجانب", "محمد عقیل")
+        adv_name = st.text_input("وکیل صاحب کا نام", "محمد حسن قریشی ایڈووکیٹ ہائی کورٹ")
+    with c2:
+        defendant = st.text_input("مدعا علیہم / بنام", "محمد سلیم")
+        case_type = st.text_input("دعویٰ یا جرم", "تکمیل معاہدہ مختص بیع")
+        date_today = st.date_input("مورخہ", datetime.date.today())
     
-    submit_btn = st.form_submit_button("وکالت نامہ تیار کریں")
+    submit = st.form_submit_button("وکالت نامہ تیار کریں")
 
-if submit_btn:
-    # آپ کے فراہم کردہ ڈیزائن کے مطابق آؤٹ پٹ
+if submit:
+    # پرنٹ کے لیے تیار شدہ ڈیزائن
     st.markdown(f"""
     <div class="v-container" style="direction: rtl;">
-        <h2 style="text-align: center; text-decoration: underline; margin-bottom: 20px; color: black;">وکالت نامہ دیوانی</h2>
+        <h2 style="text-align: center; text-decoration: underline; color: black; margin-bottom: 25px;">وکالت نامہ دیوانی</h2>
         
         <table class="header-table">
             <tr>
-                <td colspan="3"><b>بعدالت جناب:</b> {court_name}</td>
+                <td colspan="3"><b>بعدالت جناب:</b> {court}</td>
             </tr>
             <tr>
-                <td style="width: 45%;"><b>{p_name}</b> (مدعی)</td>
+                <td style="width: 45%;"><b>{plaintiff}</b> (مدعی)</td>
                 <td style="text-align: center; width: 10%;"><b>بــــنـــام</b></td>
-                <td style="width: 45%; text-align: left;"><b>{d_name}</b> (مدعا علیہم)</td>
+                <td style="width: 45%; text-align: left;"><b>{defendant}</b> (مدعا علیہم)</td>
             </tr>
             <tr>
-                <td style="border-top: 1px solid #000;"><b>منجانب:</b> {p_name}</td>
+                <td style="border-top: 1px solid #000;"><b>منجانب:</b> {plaintiff}</td>
                 <td style="border-top: 1px solid #000;"></td>
-                <td style="border-top: 1px solid #000; text-align: left;"><b>دعویٰ یا جرم:</b> {case_subject}</td>
+                <td style="border-top: 1px solid #000; text-align: left;"><b>دعویٰ یا جرم:</b> {case_type}</td>
             </tr>
         </table>
 
@@ -93,7 +93,7 @@ if submit_btn:
             <span>العبــــــــــــــــد</span>
         </div>
 
-        <p style="font-size: 20px; margin-top: 20px; color: black;"><b>مورخہ:</b> {current_date.strftime('%d-%m-%Y')}</p>
+        <p style="font-size: 20px; margin-top: 20px; color: black;"><b>مورخہ:</b> {date_today.strftime('%d-%m-%Y')}</p>
         <p style="font-size: 20px; text-align: center; font-weight: bold; margin: 20px 0; color: black;">مضمون وکالت نامہ سُن لیا ہے اور اچھی طرح سمجھ لیا ہے اور منظور ہے۔</p>
 
         <div class="abd-row" style="margin-top: 40px;">
@@ -103,7 +103,9 @@ if submit_btn:
         </div>
 
         <div class="footer-info">
-            <b>QLC Qureshi Law Chamber</b> | 02-Old Block, Near Judges Gate, Multan | {current_date.year}
+            <b>QLC Qureshi Law Chamber</b> | 02-Old Block, Near Judges Gate, Multan | {date_today.year}
+            <br>
+            Email: qureshilaw1977@gmail.com | WhatsApp: +92 330 5477770
         </div>
     </div>
     <script>setTimeout(function() {{ window.print(); }}, 500);</script>
